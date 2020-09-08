@@ -10,7 +10,7 @@ const porta = 3335
 
 const server = http.Server(app)
 
-mongoose.connect('mongodb+srv://lucas:lucas@testelucas.cdvzj.mongodb.net/teste?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://lucas:lucas@testelucas.cdvzj.mongodb.net/estoque?retryWrites=true&w=majority', {
     useNewUrlParser:true,
     useUnifiedTopology:true
 })

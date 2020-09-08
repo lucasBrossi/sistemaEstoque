@@ -7,8 +7,6 @@ const ProdutosSchema = new mongoose.Schema({
     valorCompra: Number,
     valorVenda: Number,
     tipoDeProduto: String,
-    dataCompra: Date,
-    dataVenda: Date,
     foto: String
 })
 

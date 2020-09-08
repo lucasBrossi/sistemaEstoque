@@ -1,15 +1,16 @@
 const Produtos = require('../models/Produtos')
 
+const toLower = String.prototype.toLowerCase
+
 module.exports = {
     async index(req, res){
         const {nome, tipoDeProduto} = req.query
 
-
         if(nome){
-        const produto = await Produtos.find({nome: {$regex: `.*${nome}*.`}})
+        const produto = await Produtos.find({nome: {$regex: `.*${toLower(nome)}*.`}})
             return res.json(produto)
         } else if(tipoDeProduto){
-            const produto = await Produtos.find({tipoDeProduto: {$regex: `.*${tipoDeProduto}*.`}})
+            const produto = await Produtos.find({tipoDeProduto: {$regex: `.*${toLower(tipoDeProduto)}*.`}})
             return res.json(produto)
         } else {
             return res.status(400).json({error:"Busque um nome de produto ou tipo"})
@@ -18,23 +19,21 @@ module.exports = {
     },
 
     async store(req, res) {
-        const {nome, contagem, unidadeDeMedida, valorCompra, valorVenda, tipoDeProduto, dataCompra, dataVenda} = req.body
+        const {nome, contagem, unidadeDeMedida, valorCompra, valorVenda, tipoDeProduto} = req.body
         const {filename} = req.file
 
-        const jaTem = await Produtos.findOne({nome})
+        const jaTem = await Produtos.findOne({nome:toLower(nome)})
 
         if(jaTem) {
             return res.json({error: "o item ja se encontra cadastrado"})
         }
         const produto = await Produtos.create({
-            nome,
+            nome: toLower(nome),
             contagem,
             unidadeDeMedida,
             valorCompra,
             valorVenda,
-            tipoDeProduto,
-            dataCompra,
-            dataVenda, 
+            tipoDeProduto: loLower(nome),
             foto: filename
         })
 
@@ -53,7 +52,7 @@ module.exports = {
             const {contagem} = produto
             const final = contagem + atualizacao
             const atualizar = await Produtos.updateOne({_id}, {contagem: final})
-            return res.json(atualizar)
+            return res.json({sucesso: "produto atualizado"}, atualizar)
         } else {
             return res.status(404).json({error: "Produto nao encontrado no sistema"})
         }
